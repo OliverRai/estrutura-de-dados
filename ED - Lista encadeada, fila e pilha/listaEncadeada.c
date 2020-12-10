@@ -19,15 +19,15 @@ typedef struct list
     Node *head; //nó cabeça
 } List;         //referencia pra list
 
-List *createList();                   //retorna uma referencia pra nossa lista
+List* createList();                   //retorna uma referencia pra nossa lista
 void push(List *list, DataNode data); //recebe uma referencia e um dado
 void showList(List *lista);           //printa
 void pop(List *list);                 //remove primeiro elemento
 bool isEmpty(List *list);             //lista vazia ou não
-Node *atPos(List *list, int index);   //retorna um nó
+Node* atPos(List *list, int index);   //retorna um nó
 int indexOf(List* list, Node* node); //a busca de um nó
 void erase(List* list, int index); //para excluir
-
+void insert(List* list, DataNode data, int index);
 
 List *createList()
 {
@@ -56,7 +56,6 @@ void showList(List *list)
         printf("Lista vazia\n");
         return;
     }
-
     //percorrer lista
     Node *pointer = list->head; //ponteiro iniciamente aponta para a cabeça da lista
 
@@ -85,11 +84,11 @@ void pop(List *list)
     }
 }
 
-Node *atPos(List *list, int index)
+Node* atPos(List* list, int index)
 {
     if (index >= 0 && index < list->size)
     {
-        Node *node = list->head;
+        Node* node = list->head;
         int i;
         for (i = 0; i < index; i++)
         {
@@ -142,6 +141,25 @@ void erase(List* list, int index){
     }
 }
 
+void insert(List* list, DataNode data, int index){
+    if(index == 0){
+        push(list, data);
+    } else {
+        Node* current = atPos(list, index);
+
+        if(current != NULL){
+            Node* anterior = atPos(list, index - 1);
+            
+            Node* newNode = (Node*) malloc(sizeof(Node));
+            newNode -> data = data;
+
+            anterior -> next = newNode;
+            newNode -> next = current;
+            list -> size++;
+        }
+    }
+}
+
 int main()
 {
     List *l = createList();
@@ -157,12 +175,24 @@ int main()
     data.id = 7;
     push(l, data);
 
+    data.id = 1;
+    push(l, data);
+
+    data.id = 6;
+    push(l, data);
+
     showList(l);
 
-    //erase(l, 2);
+    pop(l);
 
-    //  pop(l);
-   // showList(l);
+    showList(l);
+
+    //erase(l, 3);
+
+    showList(l);
+
+    data.id = 11;
+    insert(l, data, 3);
 
   //  printf("%d \n", indexOf(l, l -> head -> next ->next -> next));
 
