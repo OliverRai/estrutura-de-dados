@@ -27,8 +27,8 @@ int particionar(int *vetor, int inicio, int fim)
   while (i <= j)
   { ////enquanto os índice não se ultrapassarem
     while (i <= j && vetor[i] <= pivo)
-    { //enquanto vetor[i] não for maior que o pivô
-      i++;
+    { //enquanto vetor[i] não for maior que o pivô 
+      i++; 
     }
     while (i <= j && vetor[j] > pivo)
     { //enquanto vetor[j] não for menor ou igual ao pivô
@@ -44,7 +44,6 @@ int particionar(int *vetor, int inicio, int fim)
 void ordenarQuicksort(int *v, int esquerda, int direita)
 {
   int pivo;
-
   ///if (direita > esquerda)                                        | 1 | 2 | 3 | 4 |
   //if (direita <= esquerda) return;
   //Se o vetor só possui um elemento o vetor já está ordenado, retorne
