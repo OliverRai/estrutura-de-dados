@@ -14,9 +14,9 @@ void show(int *vet, int size)
 
 void merge(int *vet, int inicio, int fim)
 {
-    int meio = (inicio + fim) / 2;
+    int meio = (inicio + fim) / 2; //divide em dois
     int i = inicio;
-    int j = meio + 1;
+    int j = meio + 1; 
     int k = inicio; 
     int *vetorAux = (int *)malloc((fim + inicio) * sizeof(int)); //vetor auxiliar 
 
