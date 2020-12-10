@@ -1,6 +1,5 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
+#include <limits.h>
 
 void show(int *vet, int size)
 {
@@ -11,58 +10,39 @@ void show(int *vet, int size)
     }
 }
 
-void merge(int *vet, int inicio, int meio, int fim)
-{
-    int *aux, p1, p2, tamanho, i, j, k;
-    int fim1 = 0, fim2 = 0;
-    tamanho = fim - inicio + 1;
-    //p1 e p2 são dois vetores que serão
-    //combinados em um terceiro vetor aux
-    p1 = inicio;
-    p2 = meio + 1;
-    aux = (int *)malloc(tamanho * sizeof(int));
+/* Intercala as seqüências v[p]..v[q-1] e v[q]..v[r] */
+void intercala (int inicio, int meio, int fim, int v[]) {
+  int i, j, k;
+  int *vetorAux = (int *)malloc((fim+inicio) * sizeof(int));
 
-    if (aux != NULL)
-    {
-        for (i = 0; i < tamanho; i++)
-        {
-            if (!fim1 && fim2)
-            {
-                //primeiro if else para combinar os vetores
-                if (vet[p1] < vet[p2])
-                    aux[i] = vet[p1++];
-                else
-                    aux[i] = vet[p2++];
+  i = inicio; 
+  j = meio;
+  k = 0;
 
-                //verifica se o vetor acabou
-                if (p1 > meio)
-                    fim1 = 1;
-                if (p2 > fim)
-                    fim2 = 1;
-            }
-            else
-            {
-                if (!fim1)
-                    aux[i] = vet[p1++];
-                else
-                    aux[i] = vet[p2++];
-            }
-        }
-    }
-    free(aux);
+  while (i < meio && j <= fim) {
+    if (v[i] <= v[j])  
+      vetorAux[k++] = v[i++];
+    else  
+      vetorAux[k++] = v[j++];
+  }
+  
+  while (i < meio)  
+    vetorAux[k++] = v[i++];
+
+  while (j <= fim)  
+    vetorAux[k++] = v[j++];
+
+  for (i = inicio; i <= fim; i++)  
+    v[i] = vetorAux[i-inicio];
 }
 
-void ordenaMergeSort(int *vet, int inicio, int fim)
-{
-    int meio;
-
-    if (inicio < fim)
-    {
-        meio = floor((inicio + fim) / 2);
-        ordenaMergeSort(vet, inicio, meio);
-        ordenaMergeSort(vet, meio + 1, fim);
-        merge(vet, inicio, meio, fim); //combina as duas metades de forma ordenada
-    }
+void mergesort (int inicio, int fim, int v[]) {
+  if (inicio < fim) {
+    int meio = (inicio + fim)/2;
+    mergesort (inicio, meio, v);
+    mergesort (meio + 1, fim, v);
+    intercala (inicio, meio + 1, fim, v);
+  }
 }
 
 int main()
@@ -85,7 +65,8 @@ int main()
         printf("Numero --->  %d \n", numbersVetor[i]);
     }
 
-    ordenaMergeSort(numbersVetor, 0, size);
+    mergesort(0, size - 1, numbersVetor);
+    mergesort(numbersVetor, 0, size - 1);
 
     printf("** Numero ordenados ** \n");
     for (i = 0; i < size; i++)

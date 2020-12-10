@@ -40,6 +40,7 @@ void ordenarQuicksort(int *v, int esquerda, int direita)
 {
   int pivo;
 
+///if (direita > esquerda)
   if (direita <= esquerda) return; //verifica se o vetor tem um ou zero elementos é pq já ta ordenado
 
   pivo = particionar(v, esquerda, direita); //para dividir o vetor
