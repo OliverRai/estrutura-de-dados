@@ -1,5 +1,7 @@
+#include <stdlib.h>
 #include <stdio.h>
-#include <limits.h>
+#include <math.h>
+#include <stdbool.h>
 
 void show(int *vet, int size)
 {
@@ -10,39 +12,52 @@ void show(int *vet, int size)
     }
 }
 
-/* Intercala as seqüências v[p]..v[q-1] e v[q]..v[r] */
-void intercala (int inicio, int meio, int fim, int v[]) {
-  int i, j, k;
-  int *vetorAux = (int *)malloc((fim+inicio) * sizeof(int));
+void merge(int *vet, int inicio, int fim)
+{
+    int meio = (inicio + fim) / 2;
+    int i = inicio;
+    int j = meio + 1;
+    int k = inicio; 
+    int *vetorAux = (int *)malloc((fim + inicio) * sizeof(int)); //vetor auxiliar 
 
-  i = inicio; 
-  j = meio;
-  k = 0;
+    while(i <= meio && j <= fim){
+        //compara se o primeiro indice i é menor que o primeiro indice j,
+        //se for manda o indice i para o vetor auxiliar
+        if(vet[i] < vet[j]){
+            vetorAux[k++] = vet[i++]; //incrementa
+        }
+        //se não for, manda o indice j  para o vetor auxiliar
+        else{
+            vetorAux[k++] = vet[j++]; //incrementa
+        }
+    }
+    while(i <= meio){
+        vetorAux[k++] = vet[i++];
+    }
+    while(j <= fim){
+        vetorAux[k++] = vet[j++];
+    }
 
-  while (i < meio && j <= fim) {
-    if (v[i] <= v[j])  
-      vetorAux[k++] = v[i++];
-    else  
-      vetorAux[k++] = v[j++];
-  }
-  
-  while (i < meio)  
-    vetorAux[k++] = v[i++];
+    //copiar todos os elemetos para o vetor original
+    for(i = inicio ; i < fim ;i++){
+        vet[i] = vetorAux[i];
+    }
 
-  while (j <= fim)  
-    vetorAux[k++] = v[j++];
-
-  for (i = inicio; i <= fim; i++)  
-    v[i] = vetorAux[i-inicio];
+    free(vetorAux);
 }
 
-void mergesort (int inicio, int fim, int v[]) {
-  if (inicio < fim) {
-    int meio = (inicio + fim)/2;
-    mergesort (inicio, meio, v);
-    mergesort (meio + 1, fim, v);
-    intercala (inicio, meio + 1, fim, v);
-  }
+void ordenaMergeSort(int vet[], int inicio, int fim)
+{
+    //verifica 1 ou 0 elementos
+    if (inicio >= fim){
+        return;
+    }
+    //divide o vetor
+    int meio = (inicio + fim) / 2;
+    //chama de forma recursiva
+    ordenaMergeSort(vet, inicio, meio); // lado esquerdo
+    ordenaMergeSort(vet, meio + 1, fim); //lado direito
+    merge(vet, inicio, fim); //combina as duas metades de forma ordenada
 }
 
 int main()
@@ -60,19 +75,12 @@ int main()
     }
 
     printf("** Numero desordenados ** \n");
-    for (i = 0; i < size; i++)
-    {
-        printf("Numero --->  %d \n", numbersVetor[i]);
-    }
+    show(numbersVetor, size);
 
-    mergesort(0, size - 1, numbersVetor);
-    mergesort(numbersVetor, 0, size - 1);
+    ordenaMergeSort(numbersVetor, 0, size - 1);
 
     printf("** Numero ordenados ** \n");
-    for (i = 0; i < size; i++)
-    {
-        printf("Numero --->  %d \n", numbersVetor[i]);
-    }
+    show(numbersVetor, size);
 
     free(numbersVetor);
 

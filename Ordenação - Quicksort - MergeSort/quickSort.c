@@ -19,20 +19,25 @@ void show(int *vet, int size)
   }
 }
 
-int particionar(int *vetor, int inicio, int fim){
+int particionar(int *vetor, int inicio, int fim)
+{
   int pivo = vetor[inicio]; //primeiro elemento é o pivo
-  int i = inicio + 1; //índice i faz a varredura da esquerda para direita
-  int j = fim; //índice j faz a varredura da direita para esquerda
-  while(i <= j){////enquanto os índice não se ultrapassarem
-    while(i <= j && vetor[i] <= pivo){  //enquanto vetor[i] não for maior que o pivô
+  int i = inicio + 1;       //índice i faz a varredura da esquerda para direita
+  int j = fim;              //índice j faz a varredura da direita para esquerda
+  while (i <= j)
+  { ////enquanto os índice não se ultrapassarem
+    while (i <= j && vetor[i] <= pivo)
+    { //enquanto vetor[i] não for maior que o pivô
       i++;
     }
-    while(i <= j && vetor[j] > pivo){//enquanto vetor[j] não for menor ou igual ao pivô
+    while (i <= j && vetor[j] > pivo)
+    { //enquanto vetor[j] não for menor ou igual ao pivô
       j--;
     }
-    if(i < j) troca(vetor, i, j); //se os índices não se ultrapassarem, troque os elementos
+    if (i < j)
+      troca(vetor, i, j); //se os índices não se ultrapassarem, troque os elementos
   }
-  troca(vetor, inicio, j);//coloca o pivô na posição de ordenação
+  troca(vetor, inicio, j); //coloca o pivô na posição de ordenação
   return j;
 }
 
@@ -40,12 +45,15 @@ void ordenarQuicksort(int *v, int esquerda, int direita)
 {
   int pivo;
 
-///if (direita > esquerda)
-  if (direita <= esquerda) return; //verifica se o vetor tem um ou zero elementos é pq já ta ordenado
+  ///if (direita > esquerda)                                        | 1 | 2 | 3 | 4 |
+  //if (direita <= esquerda) return;
 
-  pivo = particionar(v, esquerda, direita); //para dividir o vetor
-  ordenarQuicksort(v, esquerda, pivo - 1);  //esquerda do pivo, do começo até pivo - 1
-  ordenarQuicksort(v, pivo + 1, direita);   //direita do pivo
+  if (direita > esquerda)
+  {
+    pivo = particionar(v, esquerda, direita); //para dividir o vetor
+    ordenarQuicksort(v, esquerda, pivo - 1);  //esquerda do pivo, do começo até pivo - 1
+    ordenarQuicksort(v, pivo + 1, direita);   //direita do pivo
+  }
 }
 
 int main()
