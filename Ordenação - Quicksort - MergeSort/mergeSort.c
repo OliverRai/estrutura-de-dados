@@ -1,7 +1,76 @@
+#include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
+
+void merge(int vet[], int start, int m, int end)
+{
+    int i, j, k;
+    int n1 = m - start + 1;
+    int n2 = end - m;
+
+    // Vetores temporarios
+    int L[n1], R[n2];
+
+    // Copiando os dados para os vetores temporarios L[] and R[]
+    for (i = 0; i < n1; i++)
+        L[i] = vet[start + i];
+    for (j = 0; j < n2; j++)
+        R[j] = vet[m + 1 + j];
+
+    // Mesclar as matrizes temporárias de volta em vet[l..r]
+
+    i = 0; // Índice inicial do primeiro subarray
+    j = 0; // Índice inicial do segundo subarray
+    k = start; //indice inicial de subarray mesclado
+
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            vet[k] = L[i];
+            i++;
+        }
+        else
+        {
+            vet[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    //Copie os elementos restantes de L[], se houver algum
+    while (i < n1)
+    {
+        vet[k] = L[i];
+        i++;
+        k++;
+    }
+
+    // Copie os elementos restantes de R[], se houver algum
+    while (j < n2)
+    {
+        vet[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// l is for left index and r is right index of the
+// sub-array of arr to be sorted
+
+void mergeSort(int vet[], int start, int end)
+{
+    if (start < end)
+    {
+        // (l+r)/2, but avoids overflow for large l and h
+        int m = start + (end - start) / 2;
+
+        // Ordena de forma recursiva, primeiro esquerda, depois direita
+        mergeSort(vet, start, m);
+        mergeSort(vet, m + 1, end);
+
+        merge(vet, start, m, end);
+    }
+}
 
 void show(int *vet, int size)
 {
@@ -12,53 +81,6 @@ void show(int *vet, int size)
     }
 }
 
-void merge(int *vet, int inicio, int fim)
-{
-    int meio = (inicio + fim) / 2; //divide em dois
-    int i = inicio;
-    int j = meio + 1; 
-    int k = inicio; 
-    int *vetorAux = (int *)malloc((fim + inicio) * sizeof(int)); //vetor auxiliar 
-
-    while(i <= meio && j <= fim){
-        //compara se o primeiro indice i é menor que o primeiro indice j,
-        //se for manda o indice i para o vetor auxiliar
-        if(vet[i] < vet[j]){
-            vetorAux[k++] = vet[i++]; //incrementa
-        }
-        //se não for, manda o indice j  para o vetor auxiliar
-        else{
-            vetorAux[k++] = vet[j++]; //incrementa
-        }
-    }
-    while(i <= meio){
-        vetorAux[k++] = vet[i++];
-    }
-    while(j <= fim){
-        vetorAux[k++] = vet[j++];
-    }
-
-    //copiar todos os elemetos para o vetor original
-    for(i = inicio ; i < fim ;i++){
-        vet[i] = vetorAux[i];
-    }
-
-    free(vetorAux);
-}
-
-void ordenaMergeSort(int vet[], int inicio, int fim)
-{
-    //verifica 1 ou 0 elementos
-    if (inicio >= fim){
-        return;
-    }
-    //divide o vetor
-    int meio = (inicio + fim) / 2;
-    //chama de forma recursiva
-    ordenaMergeSort(vet, inicio, meio); // lado esquerdo
-    ordenaMergeSort(vet, meio + 1, fim); //lado direito
-    merge(vet, inicio, fim); //combina as duas metades de forma ordenada
-}
 
 int main()
 {
@@ -77,7 +99,7 @@ int main()
     printf("** Numero desordenados ** \n");
     show(numbersVetor, size);
 
-    ordenaMergeSort(numbersVetor, 0, size - 1);
+    mergeSort(numbersVetor, 0, size - 1);
 
     printf("** Numero ordenados ** \n");
     show(numbersVetor, size);

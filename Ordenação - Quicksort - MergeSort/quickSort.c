@@ -67,7 +67,8 @@ int main()
 
   for (i = 0; i < size; i++)
   {
-    numbersVetor[i] = 1 + rand() % 100;
+    numbersVetor[i] = 1 + rand() % 1000;
+
   }
   printf("** Numero desordenados ** \n");
 
