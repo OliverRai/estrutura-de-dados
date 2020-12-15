@@ -1,16 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//inserções no final
+//exclusões no inicio
+
 struct FilaDinamica{
-    int valor;
-    struct FilaDinamica *prox;
+    int valor; //valor a ser inserido
+    struct FilaDinamica *prox; //ponteiro que aponta o proximo 
 };
 
 struct FilaDinamica *inicio, *fim;
 int tamanhomaximo = 10;
 
 int filavazia ()
-{
+{  
     if (inicio == NULL)
         return 1;
     else
@@ -21,26 +24,26 @@ void inserir (int valor)
 {
     struct FilaDinamica *novo;
     novo = (struct FilaDinamica*) malloc (sizeof(struct FilaDinamica));
-    novo->valor = valor;
-    novo->prox = NULL;
-    if (fim == NULL)
+    novo -> valor = valor; // recebe o valor que o usuario digitou 
+    novo->prox = NULL; 
+    if (fim == NULL) //verifica fila vazia
         inicio = novo;
     else
-        fim->prox = novo;
+        fim->prox = novo; //se já se tem um dado na fila, então o ponteiro fim aponta para o proximo e guarda o dado
     fim = novo;
 }
 
 void remover ()
 {
     int removido;
-    struct FilaDinamica *aux;
+    struct FilaDinamica *aux; /// ponteiro auxiliar
     aux = inicio;
-    removido = inicio->valor;
-    inicio = inicio->prox;
-    if (inicio == NULL)
+    removido = inicio->valor; // removido passa a ser o atual valor de inicio
+    inicio = inicio->prox; // inicio passa ser o próximo da lista
+    if (inicio == NULL) // verifica se apos a remoção a fila está vazia
         fim = NULL;
     printf("\nO valor %d foi removido da fila\n\n", removido);
-    free(aux);
+    free(aux); //livera o aux
 }
 
 void listar ()
@@ -115,7 +118,7 @@ void main()
             break;
 
         case 5:
-            if (filavazia()== 0)
+            if (filavazia()== 0) //igual a false 
                 listar();
             else
                 printf("\nFila vazia - Nao foi possivel executar essa operacao\n\n");

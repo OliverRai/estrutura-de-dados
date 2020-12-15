@@ -43,7 +43,7 @@ int particionar(int *vetor, int inicio, int fim)
 
 void ordenarQuicksort(int *v, int esquerda, int direita)
 {
-  int pivo;
+  int divide;
   ///if (direita > esquerda)                                        | 1 | 2 | 3 | 4 |
   //if (direita <= esquerda) return;
   //Se o vetor só possui um elemento o vetor já está ordenado, retorne
@@ -51,9 +51,9 @@ void ordenarQuicksort(int *v, int esquerda, int direita)
   {
     return;
   }
-  pivo = particionar(v, esquerda, direita); //para dividir o vetor
-  ordenarQuicksort(v, esquerda, pivo - 1);  //esquerda do pivo, do começo até pivo - 1
-  ordenarQuicksort(v, pivo + 1, direita);   //direita do pivo
+  divide = particionar(v, esquerda, direita); //para dividir o vetor
+  ordenarQuicksort(v, esquerda, divide - 1);  //esquerda do divide, do começo até divide - 1
+  ordenarQuicksort(v, divide + 1, direita);   //direita do pivo
 }
 
 int main()
